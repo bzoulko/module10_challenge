@@ -1,0 +1,30 @@
+{
+  "name": "module10_challenge",
+  "version": "1.0.0",
+  "description": "Team Profile Generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bzoulko/module10_challenge.git"
+  },
+  "author": "Brian Zoulko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bzoulko/module10_challenge/issues"
+  },
+  "homepage": "https://github.com/bzoulko/module10_challenge#readme",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  },
+  "devDependencies": {
+    "jest": "^29.0.3"
+  }
+}
+{
+  "scripts": {
+    "test": "jest"
+  }
+}
