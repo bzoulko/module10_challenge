@@ -1,0 +1,129 @@
+/*
+    Created:    09/23/2022 
+    Programmer: Brian Zoulko
+    Notes:      Devopled to assist with rendered html file design.
+    
+    Modification
+    ============
+    09/23/2022 Brian Zoulko    built css module to help facilitate in development.
+
+*/
+
+/* root - color scheme variables */
+:root {
+    --background-color: #3c5874;
+    --font-color: #e0eae4;
+    --borders: black;
+    --main-section-background-color: black;
+    --text-color: black;
+    --text-box-color: white;  
+  }
+  
+  /* set content highlight color and background */
+  ::selection {
+  
+  }
+  
+  html {
+    
+  }
+  
+  /* Body setting sourced from: bootcamp project -  ../day_05/08-Stu_Mini-Project/Main/assist/css/style.css */
+  body {
+    /* Sans Serif font stack is implemented to help select the best font for each type of computer operating system */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+      Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  
+    /* set body font size to 1.75rem, which is 1.75x more than the font-size of 10px, making it 17.5px  */
+    flex-direction: column;
+    font-size: 1.75rem;
+    line-height: 1.25;
+  }
+  
+  
+  header {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3rem;
+    color: var(--light);
+  }
+  
+  section {
+    height: 100%;
+    width: 100%;
+    border: 4px solid var(--borders);
+  }
+  
+  /* Defines how the web-page will display the ocverall elements. */
+  main {
+    /* display: flex; */
+    /*        tp  rt  bt  lt */
+    margin: -40px 10% 10% 6%;
+  }
+  
+  /* Defines the title class that emphasizes my name. */
+  .title-name {
+    color: var(--font-color);
+    text-align: right;
+    background-color: var(--background-color);
+    font-size: 120%;
+    width: 290px;
+    height: 60px;
+    margin-bottom: 0.250rem; 
+    border: 4px solid var(--borders);
+  }
+  
+  /* Determines how the title links will be positioned on the page. */
+  .title-links {
+    word-spacing: 30px;
+    font-size: 50%;
+    margin: 2% auto auto -92%;
+    color: var(--font-color);
+  }
+  
+  /* Format the title for the professional ocupassion. */
+  .title-profession {
+    color: var(--font-color);
+    vertical-align: middle;
+    text-align: right;
+    font-size: 95%;
+    width: 115%;
+    height: auto;
+  }
+  
+  .title-cell {
+    color: var(--font-color);
+    text-align: left;
+    font-size: 95%;
+    background-color: var(--main-section-background-color);
+    width: 100%
+  }
+  
+  .aboutme-area {
+    width: 96%;
+    height: auto;
+    padding: 20px;
+    /* margin-bottom: 35%; */
+    color: var(--text-color);
+  }
+  
+  .work-area {
+    display:grid;
+    grid-template-columns: 2;
+    grid-template-rows: 1;
+    padding: 20px;
+    margin-bottom: 5%;
+    color: var(--text-color);
+  }
+  
+  .contacts-area {
+    display:grid;
+    grid-template-columns: 50% 50%;
+    word-spacing: 15px;
+    padding: 20px;
+    color: var(--text-color);
+    text-align: center;
+  }
+  
