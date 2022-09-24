@@ -13,7 +13,6 @@
 :root {
     --background-color: #3c5874;
     --font-color: #e0eae4;
-    --borders: black;
     --main-section-background-color: black;
     --text-color: black;
     --text-box-color: white;  
@@ -35,95 +34,83 @@
       Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   
     /* set body font size to 1.75rem, which is 1.75x more than the font-size of 10px, making it 17.5px  */
-    flex-direction: column;
+    flex-direction: row;
     font-size: 1.75rem;
     line-height: 1.25;
   }
   
   
   header {
-    display: grid;
-    grid-template-columns: 80% 20%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 3rem;
-    color: var(--light);
+    text-align: center;
+    padding: 2rem;
+    margin-bottom: 40px;
+    background-color: brown;
+    color: white;
   }
   
   section {
-    height: 100%;
-    width: 100%;
+    display: inline-flex;
+    padding: 1rem;
     border: 4px solid var(--borders);
   }
+
+  .card {
+    display: inline-block;
+    padding: 0px;
+    height: auto;
+    border: 1px solid rgba(0, 0, 0, 0.025);
+    border-radius: .3rem;
+    box-shadow: 0 0rem 0rem rgba(0, 0, 0, 0.55), 5px 0.15rem 0.15rem rgba(0, 0, 0, 0.55);
+    background-color: lightyellow;
+  }
+
+  .card-bottom {
+    display: inline-block;
+    padding: 20px;
+  }
+
+  .card-inside {
+    padding: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.045);
+    border-radius: .3rem;
+    font-size: 18px;
+  }
   
-  /* Defines how the web-page will display the ocverall elements. */
+  .header-line1 {
+    border-radius: .3rem;
+  }
+
+  .header-line2 {
+    margin-top: -18px;
+  }
+
+  .header-line1, .header-line2 {
+    padding: 10px;
+    font-size: 25px;
+    background-color: rgb(29, 112, 154);
+    color: white;
+  }
+
+  .email-link {
+    color: rgb(29, 112, 154);
+    padding: 5px;
+  }
+
+  .email-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .form-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Defines how the web-page will display the overall elements. */
   main {
-    /* display: flex; */
+    /* display: inline-flex; */
     /*        tp  rt  bt  lt */
-    margin: -40px 10% 10% 6%;
-  }
-  
-  /* Defines the title class that emphasizes my name. */
-  .title-name {
-    color: var(--font-color);
-    text-align: right;
-    background-color: var(--background-color);
-    font-size: 120%;
-    width: 290px;
-    height: 60px;
-    margin-bottom: 0.250rem; 
-    border: 4px solid var(--borders);
-  }
-  
-  /* Determines how the title links will be positioned on the page. */
-  .title-links {
-    word-spacing: 30px;
-    font-size: 50%;
-    margin: 2% auto auto -92%;
-    color: var(--font-color);
-  }
-  
-  /* Format the title for the professional ocupassion. */
-  .title-profession {
-    color: var(--font-color);
-    vertical-align: middle;
-    text-align: right;
-    font-size: 95%;
-    width: 115%;
-    height: auto;
-  }
-  
-  .title-cell {
-    color: var(--font-color);
-    text-align: left;
-    font-size: 95%;
-    background-color: var(--main-section-background-color);
-    width: 100%
-  }
-  
-  .aboutme-area {
-    width: 96%;
-    height: auto;
-    padding: 20px;
-    /* margin-bottom: 35%; */
-    color: var(--text-color);
-  }
-  
-  .work-area {
-    display:grid;
-    grid-template-columns: 2;
-    grid-template-rows: 1;
-    padding: 20px;
-    margin-bottom: 5%;
-    color: var(--text-color);
-  }
-  
-  .contacts-area {
-    display:grid;
-    grid-template-columns: 50% 50%;
-    word-spacing: 15px;
-    padding: 20px;
-    color: var(--text-color);
-    text-align: center;
+    margin: 0px 10% 10% 6%;
   }
   
