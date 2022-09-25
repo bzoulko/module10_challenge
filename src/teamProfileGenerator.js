@@ -9,9 +9,10 @@
 */
 
 // Required modules for this application.
-const inquirer = require('inquirer');
-const fs = require('fs');
-const { clear } = require('console');
+const inquirer =    require('inquirer');
+const fs =          require('fs');
+const { clear } =   require('console');
+const htmlPage =    require("../lib/HtmlTemplate.js");
 
 // Setup Manager Prompt.
 const managerPrompt = () => {
@@ -46,8 +47,8 @@ const menuPrompt = () => {
     {
       type: "list",
       name: "menu",
-      message: "Select Menu Option",
-      choices: ["cake", "fries"]
+      message: "Add Option: ",
+      choices: ["engineer", "intern", "finished"],
     }
   ]);
 };
@@ -105,29 +106,11 @@ const internPrompt = () => {
   ]);
 };
 
-const generateHTML = ({ name, location, github, linkedin }) =>
-  `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <title>Document</title>
-</head>
-<body>
-  <div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-4">Hi! My name is ${name}</h1>
-    <p class="lead">I am from ${location}.</p>
-    <h3>Example heading <span class="badge badge-secondary">Contact Me</span></h3>
-    <ul class="list-group">
-      <li class="list-group-item">My GitHub username is ${github}</li>
-      <li class="list-group-item">LinkedIn: ${linkedin}</li>
-    </ul>
-  </div>
-</div>
-</body>
-</html>`;
+const generateHTML = ({ answers }) => {
+  let documentTitle = "Team Profile Generator";
+  let webPageTitle = "My Team";
+  return(htmlPage.getHTMLTemplate(documentTitle, webPageTitle));
+}
 
 
 function screenTitle() {
@@ -142,12 +125,22 @@ function screenTitle() {
 function startCLI() {
   screenTitle();
   managerPrompt()
-    
     // Use writeFileSync method to use promises instead of a callback function
-    .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+    .then((answers) => {
+      // Create HTML Web Page.
+      fs.writeFileSync('index.html', generateHTML(answers));
+      // console.log("name: " + answers.manager);
+      // console.log("id: " + answers.ID);
+      // console.log("email: " + answers.email);
+      // console.log("office: " + answers.office);
+      
+      // Add Manager's card to the HTML.
+      
+
+    })
     .then(() => {
 
-      screenTitle();
+      //screenTitle();
       menuPrompt()
         // Use writeFileSync method to use promises instead of a callback function
         .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
@@ -159,3 +152,9 @@ function startCLI() {
 };
 
 startCLI();
+
+// Add functions from other js files.
+//module.exports = { getHTMLTemplate };
+
+// // Include functions from additional javascript files.
+// import {getHTMLTemplate} from '../lib/HtmlTemplate.js';
