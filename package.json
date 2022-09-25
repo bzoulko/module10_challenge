@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/bzoulko/module10_challenge#readme",
   "dependencies": {
-    "inquirer": "^8.2.4"
+    "inquirer": "^8.2.4",
+    "jquery": "^3.6.1",
+    "jsdom": "^20.0.0"
   },
   "devDependencies": {
     "jest": "^29.0.3"

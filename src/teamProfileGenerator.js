@@ -13,6 +13,8 @@ const inquirer =    require('inquirer');
 const fs =          require('fs');
 const { clear } =   require('console');
 const htmlPage =    require("../lib/HtmlTemplate.js");
+const jsdom =       require("jsdom"); // This library will allow JQuery.
+  
 
 // Setup Manager Prompt.
 const managerPrompt = () => {
@@ -127,51 +129,42 @@ function startCLI() {
   managerPrompt()
     // Use writeFileSync method to use promises instead of a callback function
     .then((answers) => {
-      // Create HTML Web Page.
-      fs.writeFileSync('index.html', generateHTML(answers));
-      // console.log("name: " + answers.manager);
-      // console.log("id: " + answers.ID);
-      // console.log("email: " + answers.email);
-      // console.log("office: " + answers.office);
-      
+      let name = answers.manager;
+      let ID = answers.ID;
+      let email = answers.email;
+      let office = answers.office;
 
-  //  <section>
-  //     <section class="card">
-  //         <div>
-  //             <p class="header-line1">${name}</p>
-  //             <p class="header-line2">${occupation}</p>
-  //         </div>
-  //         <div class="card-bottom">
-  //             <div class="card-inside">ID: ${id}</div>
-  //             <div class="card-inside">Email:
-  //                 <a class="email-link">${email}</a>
-  //             </div>
-  //             <div class="card-inside">${type}:
-  //                 <a>${typeDetail}</a>
-  //             </div>
-  //         </div>
-  //     </section>
-  //  </section>
+      // Creating a window with a document
+      const dom = new jsdom.JSDOM(generateHTML(answers));
+        
+      // Importing the jquery and providing it
+      // with the window
+      const jquery = require("jquery")(dom.window);
 
-      // Add Manager's card to the HTML.
-      var formContent = $(".form-content");
-      const mainSection = $("<section>");
-      const cardSection = $("<section class='card'>");
+      // Add Manager's card to the HTML.      
+      let formContent = jquery(".form-content");
+      const mainSection = jquery("<section>");
+      const cardSection = jquery("<section class='card'>");
       
-      const divTop = $("<div>");
-      const divTitleLine = $(`<p class="header-line1">${"name"}`);
-      const divOccupation = $(`<p class="header-line2">${"occupation"}`);
+      const divTop = jquery("<div>");
+      const divTitleLine = jquery(`<p class="header-line1">`).text(name);
+      const divOccupation = jquery(`<p class="header-line2">`).text("Manager");
       divTop.append(divTitleLine).append(divOccupation);
 
-      const divBottom = $("<div class='card-bottom'>");
-      const divID = $("<div class='card-inside'>ID: ${id}>");
-      const divEmail = $("<div class='card-inside'>Email:>").append($(`<a class="email-link">${'email'}>`));
-      const divType = $(`<div class='card-inside'>${'type'}:`).append($(`<a>${'typeDetail'}`));
+      const divBottom = jquery("<div class='card-bottom'>");
+      const divID = jquery(`<div class='card-inside'>`).text("ID: " + ID);
+      const aEmail = jquery(`<a class="email-link">`).text(email);
+      const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
+      const divType = jquery(`<div class='card-inside'>`).text(office);
+      divType.append(jquery(`<a>`));
       divBottom.append(divID).append(divEmail).append(divType);
 
       cardSection.append(divTop).append(divBottom);
       mainSection.append(cardSection);
       formContent.append(mainSection);
+
+      let htmlData = jquery("html")
+      fs.writeFileSync('index.html', "<!DOCTYPE html><html lang='en'>" + htmlData.html() + "</html>");
 
     })
     .then(() => {
@@ -179,7 +172,10 @@ function startCLI() {
       //screenTitle();
       menuPrompt()
         // Use writeFileSync method to use promises instead of a callback function
-        .then((answers) => fs.writeFileSync('index.html', generateHTML(answers)))
+        .then((answers) => {
+          console.log("check file now...");
+          //fs.writeFileSync('index.html', generateHTML(answers))
+        })
         .then(() => console.log('Successfully wrote to index.html'))
         .catch((err) => console.error(err));
 
