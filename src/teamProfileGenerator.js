@@ -134,8 +134,44 @@ function startCLI() {
       // console.log("email: " + answers.email);
       // console.log("office: " + answers.office);
       
+
+  //  <section>
+  //     <section class="card">
+  //         <div>
+  //             <p class="header-line1">${name}</p>
+  //             <p class="header-line2">${occupation}</p>
+  //         </div>
+  //         <div class="card-bottom">
+  //             <div class="card-inside">ID: ${id}</div>
+  //             <div class="card-inside">Email:
+  //                 <a class="email-link">${email}</a>
+  //             </div>
+  //             <div class="card-inside">${type}:
+  //                 <a>${typeDetail}</a>
+  //             </div>
+  //         </div>
+  //     </section>
+  //  </section>
+
       // Add Manager's card to the HTML.
+      var formContent = $(".form-content");
+      const mainSection = $("<section>");
+      const cardSection = $("<section class='card'>");
       
+      const divTop = $("<div>");
+      const divTitleLine = $(`<p class="header-line1">${"name"}`);
+      const divOccupation = $(`<p class="header-line2">${"occupation"}`);
+      divTop.append(divTitleLine).append(divOccupation);
+
+      const divBottom = $("<div class='card-bottom'>");
+      const divID = $("<div class='card-inside'>ID: ${id}>");
+      const divEmail = $("<div class='card-inside'>Email:>").append($(`<a class="email-link">${'email'}>`));
+      const divType = $(`<div class='card-inside'>${'type'}:`).append($(`<a>${'typeDetail'}`));
+      divBottom.append(divID).append(divEmail).append(divType);
+
+      cardSection.append(divTop).append(divBottom);
+      mainSection.append(cardSection);
+      formContent.append(mainSection);
 
     })
     .then(() => {
