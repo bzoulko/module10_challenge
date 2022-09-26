@@ -178,7 +178,7 @@ function addTeamMembers(jquery) {
       if (answers.menu === "finished") {
         console.log("Finished!");
         writeHTMLfile(jquery("html"));
-        window.open('index.html', '_self');
+        jquery.open('index.html', '_self');
         return;
       }
 
@@ -307,7 +307,7 @@ function addEngineerCard(jquery, engineer) {
 /* ****************************
   Add Intern Card to Index.html
 ******************************* */
-function addEngineerCard(jquery, intern) {
+function addInternCard(jquery, intern) {
 
   // Locate Form where to add card.
   let formContent = jquery(".form-content");
@@ -356,33 +356,29 @@ function addEngineerCard(jquery, intern) {
 class Employee {
     
   constructor(name, id, email) {
-      this.name = name;
-      this.id = id;
-      this.email = email;
+    this.name = name;
+    this.id = id;
+    this.email = email;
   }
 
   // Return:  Employee Name.
   getName() {
-      console.log(`Employee Name is ${this.name}.`);
-      return(this.name);
+    return(this.name);
   }
 
   // Return:  Employee Id
   getId() {
-      console.log(`Employee Id is ${this.id}.`);
-      return(this.id);
+    return(this.id);
   }
 
   // Return:  Employee Email
   getEmail() {
-      console.log(`Employee Email is ${this.email}.`);
-      return(this.email);
+    return(this.email);
   }
 
   // Return:  Employee Class
   getRole() {
-      console.log(`Employee ${Employee}.`);
-      return(Employee);
+    return(new Employee(this.name, this.id, this.email));
   }
 
 }
@@ -400,59 +396,38 @@ class Employee {
 /* **********************************
   C L A S S   M O D U L E  -  Manager 
 ************************************* */
-class Manager {        
+class Manager extends Employee {        
 
-  constructor(id, name, email, officeNumber) {
-      this.id = id;
-      this.name = name;
-      this.email = email;
-      this.officeNumber = officeNumber;
+  constructor(name, id, email, officeNumber) {
+    super(name, id, email);
+    this.officeNumber = officeNumber;
+  }
+
+  getName() {
+    return(super.getName());
+  }
+
+  getID() {
+    return(super.getID());
+  }
+
+  getEmail() {
+    return(super.getEmail());
   }
 
   // Return:  Title Text w/Emoji Image
   getTitle(){
-      return("🍵Manager");
+    return("🍵Manager");
   }
   
-  // Return:  ID
-  getID() {
-      return(this.id);
-  }
-  setID(id) {
-      this.id = id;
-  }
-  
-
   // Return:  Office Number
   getOfficeNumber() {
-      return(this.officeNumber);
+    return(this.officeNumber);
   }
-  setOfficeNumber(officeNumber) {
-      this.officeNumber = officeNumber;
-  }
-
-
-  // Return:  Email
-  getEmail() {
-      return(this.email);
-  }
-  setEmail(email) {
-      this.email = email;
-  }
-
-
-  // Return:  Name
-  getName() {
-      return(this.name);
-  }
-  setName(name) {
-      this.name = name;
-  }
-
   
   // Return:  Manager Class
   getRole() {
-      return(Manager);
+    return(Manager);
   }
 
 }
@@ -470,27 +445,38 @@ class Manager {
 /* ***********************************
   C L A S S   M O D U L E  -  Engineer 
 ************************************** */
-class Engineer {
+class Engineer extends Employee {
     
-  constructor(gitHub) {
-      this.gitHub = gitHub;
+  constructor(name, id, email, gitHub) {
+    super(name, id, email);
+    this.gitHub = gitHub;
+  }
+
+  getName() {
+    return(super.getName());
+  }
+
+  getID() {
+    return(super.getID());
+  }
+
+  getEmail() {
+    return(super.getEmail());
   }
   
   // Return:  Git Hub URL
   getGitHub() {
-      console.log(`Engineer gitHub ${this.gitHub}.`);
-      return(this.gitHub);
+    return(this.gitHub);
   }
 
   // Return:  Title Text w/Emoji Image
   getTitle(){
-      return("👷Engineer");
+    return("👷Engineer");
   }
 
   // Retrun:  Engineer Class
   getRole() {
-      console.log(`Engineer ${Engineer}.`);
-      return(Engineer);
+    return(Engineer);
   }
 
 }
@@ -508,27 +494,38 @@ class Engineer {
 /* *********************************
   C L A S S   M O D U L E  -  Intern 
 ************************************ */
-class Intern {
+class Intern extends Employee{
     
-  constructor(school) {
-      this.school = school;
+  constructor(name, id, email, school) {
+    super(name, id, email);
+    this.school = school;
   }
-  
+
+  getName() {
+    return(super.getName());
+  }
+
+  getID() {
+    return(super.getID());
+  }
+
+  getEmail() {
+    return(super.getEmail());
+  }
+
   // Return:  School
   getSchool() {
-      console.log(`Intern school ${this.school}.`);
-      return(this.school);
+    return(this.school);
   }
 
   // Return:  Title Text w/Emoji Image
   getTitle(){
-      return("🎓Intern");
+    return("🎓Intern");
   }
   
   // Return:  Intern Class
   getRole() {
-      console.log(`Intern ${Intern}.`);
-      return(Intern);
+    return(Intern);
   }
 
 }
