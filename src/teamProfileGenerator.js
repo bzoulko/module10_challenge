@@ -172,12 +172,13 @@ function addTeamMembers(jquery) {
 
   screenTitle("        A D D   T E A M   M E M B E R S        ");
   menuPrompt() 
-    // Use writeFileSync method to use promises instead of a callback function
     .then((answers) => {
 
+      // When finished, write out HTML file and open it.
       if (answers.menu === "finished") {
         console.log("Finished!");
         writeHTMLfile(jquery("html"));
+        window.open('index.html', '_self');
         return;
       }
 
@@ -185,13 +186,14 @@ function addTeamMembers(jquery) {
         case "engineer":
           screenTitle("   E N T E R   E N G I N E E R   D E T A I L  ");                          
           engineerPrompt() 
-            // Use writeFileSync method to use promises instead of a callback function
             .then((answers) => {
-      
-              console.log("Adding team member: " + answers.menu);
+              
+              // Add ENGINEER card to html.
               const engineer = new Engineer();
-              addTeamMembers(jquery);
               addEngineerCard(jquery, engineer);
+
+              // Re-Load team members prompt.
+              addTeamMembers(jquery);
       
             })
             .catch((err) => {
@@ -203,14 +205,15 @@ function addTeamMembers(jquery) {
         case "intern":
           screenTitle("     E N T E R   I N T E R N   D E T A I L    ");                          
           internPrompt() 
-            // Use writeFileSync method to use promises instead of a callback function
             .then((answers) => {
       
-              console.log("Added team member: " + answers.menu);
+              // Add INTERN card to html.
               const intern = new Intern(answers.item);
-              addTeamMembers(jquery);
               addEngineerCard(jquery, intern);
-      
+
+              // Re-Load team members prompt.
+              addTeamMembers(jquery);
+
             })
             .catch((err) => {
               console.error(err);
