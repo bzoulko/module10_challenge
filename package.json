@@ -20,7 +20,8 @@
     "inquirer": "^8.2.4",
     "inquirer-loop": "^0.3.0",
     "jquery": "^3.6.1",
-    "jsdom": "^20.0.0"
+    "jsdom": "^20.0.0",
+    "puppeteer": "^18.0.5"
   },
   "devDependencies": {
     "jest": "^29.0.3"

@@ -9,18 +9,23 @@
 */
 
 // Required modules for this application.
-const inquirer =    require('inquirer');
-const fs =          require('fs');
-const { clear, Console } =   require('console');
-const jsdom =       require("jsdom"); // This library will allow JQuery.
+const inquirer =    require('inquirer');          // Prompt features for CLI.
+const fs =          require('fs');                // File System I/O.
+const puppeteer =   require('puppeteer');         // Used to systematically run the new html file.
+const { clear, Console } =   require('console');  // Clear console area on demand.
+const jsdom =       require("jsdom");             // This library will allow JQuery.
+
+
+// Default Template for HTML file creation.
 const htmlPage =    require("../lib/HtmlTemplate.js");
+
 
 // Setup Manager Prompt.
 const managerPrompt = () => {
   return inquirer.prompt([
     {
       type: 'input',
-      name: 'manager',
+      name: 'name',
       message: `Team Manager's name: `,
     },
     {
@@ -178,7 +183,16 @@ function addTeamMembers(jquery) {
       if (answers.menu === "finished") {
         console.log("Finished!");
         writeHTMLfile(jquery("html"));
-        jquery.open('index.html', '_self');
+
+        //jquery(this).load('index.html', '_self');
+        //jquery("html").load('index.html');
+        //dom.window.open('index.html', '_self')
+
+        // Waits until browser window closes.
+        launchHtml("C:\\Users\\bzoul\\OneDrive\\Desktop\\module10_challenge\\index.html");
+
+        // Next steps...
+
         return;
       }
 
@@ -227,6 +241,25 @@ function addTeamMembers(jquery) {
       console.error(err);
       return;
     });        
+}
+
+
+/* *************************
+  Launch HTML page in Browser.
+**************************** */
+async function launchHtml(htmlString) {
+  
+  // Define and launch browser with html page.
+  const browser = await puppeteer.launch({
+    headless: false, 
+    defaultViewport: null, 
+    executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe'
+  });
+  const pages = await browser.pages();
+  const page = pages[0];
+  await page.goto(htmlString);
+  return;
+
 }
 
 
