@@ -124,7 +124,7 @@ function startCLI() {
   var dom = new jsdom.JSDOM(htmlPage.getHTMLTemplate(documentTitle, webPageTitle));
 
   // Add Team Manger
-  addTeamManager();
+  addTeamManager(dom);
   
 };
 
@@ -140,7 +140,7 @@ function writeHTMLfile(htmlData) {
 /* ********************************************************
   Add Manager to html and start prompting for team members.
 *********************************************************** */
-function addTeamManager() {
+function addTeamManager(dom) {
   
   // Importing the jquery and providing it
   // with the window
