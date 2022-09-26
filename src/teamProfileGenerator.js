@@ -367,7 +367,7 @@ class Employee {
   }
 
   // Return:  Employee Id
-  getId() {
+  getID() {
     return(this.id);
   }
 
