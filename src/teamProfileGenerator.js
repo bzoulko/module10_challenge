@@ -152,7 +152,7 @@ function addTeamManager(dom) {
     .then((answers) => {
 
       // Define and store manager detail.
-      const manager = new Manager(answers.ID, answers.manager, answers.email, answers.office);      
+      const manager = new Manager(answers.name, answers.ID, answers.email, answers.office);      
       addManagerCard(jquery, manager);
   
     })
@@ -189,10 +189,10 @@ function addTeamMembers(jquery) {
             .then((answers) => {
               
               // Add ENGINEER card to html.
-              const engineer = new Engineer();
+              const engineer = new Engineer(answers.name, answers.ID, answers.email, answers.github);
               addEngineerCard(jquery, engineer);
 
-              // Re-Load team members prompt.
+              // Ask for more team members.
               addTeamMembers(jquery);
       
             })
@@ -208,10 +208,10 @@ function addTeamMembers(jquery) {
             .then((answers) => {
       
               // Add INTERN card to html.
-              const intern = new Intern(answers.item);
-              addEngineerCard(jquery, intern);
+              const intern = new Intern(answers.name, answers.ID, answers.email, answers.school);
+              addInternCard(jquery, intern);
 
-              // Re-Load team members prompt.
+              // Ask for more team members.
               addTeamMembers(jquery);
 
             })
