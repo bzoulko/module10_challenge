@@ -191,6 +191,7 @@ function addTeamMembers(jquery) {
               console.log("Adding team member: " + answers.menu);
               const engineer = new Engineer();
               addTeamMembers(jquery);
+              addEngineerCard(jquery, engineer);
       
             })
             .catch((err) => {
@@ -207,7 +208,8 @@ function addTeamMembers(jquery) {
       
               console.log("Added team member: " + answers.menu);
               const intern = new Intern(answers.item);
-              addTeamMembers(jQuery, intern);
+              addTeamMembers(jquery);
+              addEngineerCard(jquery, intern);
       
             })
             .catch((err) => {
