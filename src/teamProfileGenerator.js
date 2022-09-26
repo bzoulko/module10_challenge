@@ -15,29 +15,28 @@ const { clear, Console } =   require('console');
 const jsdom =       require("jsdom"); // This library will allow JQuery.
 const htmlPage =    require("../lib/HtmlTemplate.js");
 
-
 // Setup Manager Prompt.
 const managerPrompt = () => {
   return inquirer.prompt([
     {
       type: 'input',
       name: 'manager',
-      message: `Team manager's name: `,
+      message: `Team Manager's name: `,
     },
     {
       type: 'input',
       name: 'ID',
-      message: 'Enter employee ID: ',
+      message: `Manager's ID: `,
     },
     {
       type: 'input',
       name: 'email',
-      message: 'Enter email address: ',
+      message: `Manger's email: `,
     },
     {
       type: 'input',
       name: 'office',
-      message: 'Enter office number: ',
+      message: `Manager's office number: `,
     },
   ]);
 };
@@ -49,8 +48,8 @@ const menuPrompt = () => {
     {
       type: "list",
       name: "menu",
-      message: "Add aother member to my team: ",
-      choices: ["engineer", "intern", "finished"],
+      message: "Add a team member or 'finshed' to exit: ",
+      choices: ["engineer", "intern", new inquirer.Separator(), "finished"],
     }
   ]);
 };
@@ -61,23 +60,23 @@ const engineerPrompt = () => {
   return inquirer.prompt([
     {
       type: 'input',
-      name: 'manager',
-      message: `Team manager's name: `,
+      name: 'name',
+      message: `Engineer's name: `,
     },
     {
       type: 'input',
       name: 'ID',
-      message: 'Enter employee ID: ',
+      message: `Engineer's ID: `,
     },
     {
       type: 'input',
       name: 'email',
-      message: 'Enter email address: ',
+      message: `Engineer's email: `,
     },
     {
       type: 'input',
-      name: 'office',
-      message: 'Enter office number: ',
+      name: 'github',
+      message: `Engineer's GitHub: `,
     },
   ]);
 };
@@ -87,108 +86,164 @@ const internPrompt = () => {
   return inquirer.prompt([
     {
       type: 'input',
-      name: 'manager',
-      message: `Team manager's name: `,
+      name: 'name',
+      message: `Intern's name: `,
     },
     {
       type: 'input',
       name: 'ID',
-      message: 'Enter employee ID: ',
+      message: `Intern's ID: `,
     },
     {
       type: 'input',
       name: 'email',
-      message: 'Enter email address: ',
+      message: `Intern's email: `,
     },
     {
       type: 'input',
-      name: 'office',
-      message: 'Enter office number: ',
+      name: 'school',
+      message: 'Enter school: ',
     },
   ]);
 };
 
 
-function screenTitle() {
+function screenTitle(msg) {
   clear();
   console.log("***********************************************");
-  console.log("  T E A M   P R O F I L E   G E N E R A T O R  ");
+  console.log(msg);
   console.log("***********************************************");
 }
 
 // Start CLI Process.
 function startCLI() {
-  var employeeList = [];
-  var manager = null;
-  var intern = null;
-  var engineer = null;
-
-  screenTitle();
-  managerPrompt()
-        
-    .then((answers) => {
-
-      // Define and store manager detail.
-      manager = new Manager(answers.ID, answers.manager, answers.email, answers.office);      
-
-    })
-    .then(() => {
-
-      //screenTitle();
-      menuPrompt()
-        // Use writeFileSync method to use promises instead of a callback function
-        .then((answers) => {
-
-          console.log("answers.menu: " + answers.menu);
-          // let name = answers.manager;
-          // let ID = answers.ID;
-          // let email = answers.email;
-          // let office = answers.office;
-          // employees.push(new Employee(name, email, office));
-          buildIndexHTML(manager, employeeList);
-    
-        })
-        .then(() => console.log('Successfully wrote to index.html'))
-        .catch((err) => console.error(err));
-
-    })
-    .catch((err) => console.error(err))
-};
-
-startCLI();
-function buildIndexHTML (manager, employeeList) {
 
   // Creating a window with a document
   let documentTitle = "Team Profile Generator";
   let webPageTitle = "My Team";
   var dom = new jsdom.JSDOM(htmlPage.getHTMLTemplate(documentTitle, webPageTitle));
 
+  // Add Team Manger
+  addTeamManager();
+  
+};
+
+
+/* **************************************
+  Write HTML Index file from jQuery data.
+***************************************** */
+function writeHTMLfile(htmlData) {
+  fs.writeFileSync('index.html', "<!DOCTYPE html><html lang='en'>" + htmlData.html() + "</html>");
+}
+
+
+/* ********************************************************
+  Add Manager to html and start prompting for team members.
+*********************************************************** */
+function addTeamManager() {
+  
   // Importing the jquery and providing it
   // with the window
   var jquery = require("jquery")(dom.window);
-  
-  buildManagerCard(jquery, manager);
 
-  let htmlData = jquery("html")
+  screenTitle("  T E A M   P R O F I L E   G E N E R A T O R  ");
+  managerPrompt()
+        
+    .then((answers) => {
 
-  fs.writeFileSync('index.html', "<!DOCTYPE html><html lang='en'>" + htmlData.html() + "</html>");
+      // Define and store manager detail.
+      const manager = new Manager(answers.ID, answers.manager, answers.email, answers.office);      
+      addManagerCard(jquery, manager);
   
+    })
+    .then(() => {
+
+      addTeamMembers(jquery);
+
+    })
+    .catch((err) => console.error(err))
 }
 
+
+/* ************************************************************************
+  Add Team Members that will be call recursivly until the user is finished.
+*************************************************************************** */
+function addTeamMembers(jquery) {
+
+  screenTitle("        A D D   T E A M   M E M B E R S        ");
+  menuPrompt() 
+    // Use writeFileSync method to use promises instead of a callback function
+    .then((answers) => {
+
+      if (answers.menu === "finished") {
+        console.log("Finished!");
+        writeHTMLfile(jquery("html"));
+        return;
+      }
+
+      switch (answers.menu) {
+        case "engineer":
+          screenTitle("   E N T E R   E N G I N E E R   D E T A I L  ");                          
+          engineerPrompt() 
+            // Use writeFileSync method to use promises instead of a callback function
+            .then((answers) => {
+      
+              console.log("Adding team member: " + answers.menu);
+              const engineer = new Engineer();
+              addTeamMembers(jquery);
+      
+            })
+            .catch((err) => {
+              console.error(err);
+              return;
+            });        
+          break;
+      
+        case "intern":
+          screenTitle("     E N T E R   I N T E R N   D E T A I L    ");                          
+          internPrompt() 
+            // Use writeFileSync method to use promises instead of a callback function
+            .then((answers) => {
+      
+              console.log("Added team member: " + answers.menu);
+              const intern = new Intern(answers.item);
+              addTeamMembers(jQuery, intern);
+      
+            })
+            .catch((err) => {
+              console.error(err);
+              return;
+            });          
+          break;            
+      }
+
+    })
+    .catch((err) => {
+      console.error(err);
+      return;
+    });        
+}
+
+
 /* ********************************
-  Build Manager Card for Index.html
+  Add Manager Card for Index.html
 *********************************** */
-function buildManagerCard(jquery, manager) {
-    // Add Manager's card to the HTML.
+function addManagerCard(jquery, manager) {
+
+    // Locate Form where to add card.
     let formContent = jquery(".form-content");
+
+    // Create section for the card and start building card section
     const mainSection = jquery("<section>");
     const cardSection = jquery("<section class='card'>");
     
+    // Top half of the Card.
     const divTop = jquery("<div>");
     const divTitleLine = jquery(`<p class="header-line1">`).text(manager.getName());
     const divOccupation = jquery(`<p class="header-line2">`).text(manager.getTitle());
     divTop.append(divTitleLine).append(divOccupation);
   
+    // Bottom half of the Card.
     const divBottom = jquery("<div class='card-bottom'>");
     const divID = jquery(`<div class='card-inside'>`).text("ID: " + manager.getID());
     const aEmail = jquery(`<a class="email-link">`).text(manager.getEmail());
@@ -197,9 +252,87 @@ function buildManagerCard(jquery, manager) {
     divType.append(jquery(`<a>`).text(manager.getOfficeNumber()));
     divBottom.append(divID).append(divEmail).append(divType);
   
+    // Add both halves into the card section.
     cardSection.append(divTop).append(divBottom);
     mainSection.append(cardSection);
-    formContent.append(mainSection);  
+
+    // Update form with card section
+    formContent.append(mainSection);
+
+}
+
+
+/* *******************************
+  Add Engineer Card to Index.html
+********************************** */
+function addEngineerCard(jquery, engineer) {
+
+  // Locate Form where to add card.
+  let formContent = jquery(".form-content");
+
+  // Create section for the card and start building card section
+  const mainSection = jquery("<section>");
+  const cardSection = jquery("<section class='card'>");
+
+  // Top half of the Card.
+  const divTop = jquery("<div>");
+  const divTitleLine = jquery(`<p class="header-line1">`).text(engineer.getName());
+  const divOccupation = jquery(`<p class="header-line2">`).text(engineer.getTitle());
+  divTop.append(divTitleLine).append(divOccupation);
+
+  // Bottom half of the Card.
+  const divBottom = jquery("<div class='card-bottom'>");
+  const divID = jquery(`<div class='card-inside'>`).text("ID: " + engineer.getID());
+  const aEmail = jquery(`<a class="email-link">`).text(engineer.getEmail());
+  const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
+  const divType = jquery(`<div class='card-inside'>`).text("GitHub: ");
+  divType.append(jquery(`<a>`).text(engineer.getGitHub()));
+  divBottom.append(divID).append(divEmail).append(divType);
+
+  // Add both halves into the card section.
+  cardSection.append(divTop).append(divBottom);
+  mainSection.append(cardSection);
+
+  // Update form with card section
+  formContent.append(mainSection);
+
+}
+
+
+/* ****************************
+  Add Intern Card to Index.html
+******************************* */
+function addEngineerCard(jquery, intern) {
+
+  // Locate Form where to add card.
+  let formContent = jquery(".form-content");
+
+  // Create section for the card and start building card section
+  const mainSection = jquery("<section>");
+  const cardSection = jquery("<section class='card'>");
+
+  // Top half of the Card.
+  const divTop = jquery("<div>");
+  const divTitleLine = jquery(`<p class="header-line1">`).text(intern.getName());
+  const divOccupation = jquery(`<p class="header-line2">`).text(intern.getTitle());
+  divTop.append(divTitleLine).append(divOccupation);
+
+  // Bottom half of the Card.
+  const divBottom = jquery("<div class='card-bottom'>");
+  const divID = jquery(`<div class='card-inside'>`).text("ID: " + intern.getID());
+  const aEmail = jquery(`<a class="email-link">`).text(intern.getEmail());
+  const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
+  const divType = jquery(`<div class='card-inside'>`).text("School: ");
+  divType.append(jquery(`<a>`).text(intern.getSchool()));
+  divBottom.append(divID).append(divEmail).append(divType);
+
+  // Add both halves into the card section.
+  cardSection.append(divTop).append(divBottom);
+  mainSection.append(cardSection);
+
+  // Update form with card section
+  formContent.append(mainSection);
+
 }
 
 
@@ -394,3 +527,7 @@ class Intern {
   }
 
 }
+
+
+// Begin CLI prompting.
+startCLI();
