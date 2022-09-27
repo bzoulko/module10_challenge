@@ -213,7 +213,7 @@ function addTeamManager(dom) {
 
       // Define and store manager detail.
       const manager = new Manager(answers.name, answers.ID, answers.email, answers.office);      
-      addManagerCard(jquery, manager);
+      addEmployeeCard(jquery, manager, "M");
   
     })
     .then(() => {
@@ -251,7 +251,7 @@ function addTeamMembers(jquery) {
               
               // Add ENGINEER card to html.
               const engineer = new Engineer(answers.name, answers.ID, answers.email, answers.github);
-              addEngineerCard(jquery, engineer);
+              addEmployeeCard(jquery, engineer, "E");
 
               // Ask for more team members.
               addTeamMembers(jquery);
@@ -270,7 +270,7 @@ function addTeamMembers(jquery) {
       
               // Add INTERN card to html.
               const intern = new Intern(answers.name, answers.ID, answers.email, answers.school);
-              addInternCard(jquery, intern);
+              addEmployeeCard(jquery, intern, "I");
 
               // Ask for more team members.
               addTeamMembers(jquery);
@@ -310,47 +310,10 @@ async function launchHtml(htmlString) {
 }
 
 
-/* ********************************
-  Add Manager Card for Index.html
-*********************************** */
-function addManagerCard(jquery, manager) {
-
-    // Locate Form where to add card.
-    let formContent = jquery(".form-content");
-
-    // Create section for the card and start building card section
-    const mainSection = jquery("<section>");
-    const cardSection = jquery("<section class='card'>");
-    
-    // Top half of the Card.
-    const divTop = jquery("<div>");
-    const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(manager.getName()));
-    const divOccupation = jquery(`<p class="header-line2">`).text(manager.getTitle());
-    divTop.append(divTitleLine).append(divOccupation);
-  
-    // Bottom half of the Card.
-    const divBottom = jquery("<div class='card-bottom'>");
-    const divID = jquery(`<div class='card-inside'>`).text("ID: " + manager.getID());
-    const aEmail = jquery(`<a class="email-link">`).text(manager.getEmail());
-    const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
-    const divType = jquery(`<div class='card-inside'>`).text("Office number: ");
-    divType.append(jquery(`<a>`).text(manager.getOfficeNumber()));
-    divBottom.append(divID).append(divEmail).append(divType);
-  
-    // Add both halves into the card section.
-    cardSection.append(divTop).append(divBottom);
-    mainSection.append(cardSection);
-
-    // Update form with card section
-    formContent.append(mainSection);
-
-}
-
-
-/* *******************************
-  Add Engineer Card to Index.html
-********************************** */
-function addEngineerCard(jquery, engineer) {
+/* ******************************
+  Add Employee Card to Index.html
+********************************* */
+function addEmployeeCard(jquery, clsMod, type) {
 
   // Locate Form where to add card.
   let formContent = jquery(".form-content");
@@ -361,17 +324,32 @@ function addEngineerCard(jquery, engineer) {
 
   // Top half of the Card.
   const divTop = jquery("<div>");
-  const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(engineer.getName()));
-  const divOccupation = jquery(`<p class="header-line2">`).text(engineer.getTitle());
+  const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(clsMod.getName()));
+  const divOccupation = jquery(`<p class="header-line2">`).text(clsMod.getTitle());
   divTop.append(divTitleLine).append(divOccupation);
 
   // Bottom half of the Card.
   const divBottom = jquery("<div class='card-bottom'>");
-  const divID = jquery(`<div class='card-inside'>`).text("ID: " + engineer.getID());
-  const aEmail = jquery(`<a class="email-link">`).text(engineer.getEmail());
+  const divID = jquery(`<div class='card-inside'>`).text("ID: " + clsMod.getID());
+  const aEmail = jquery(`<a class="email-link">`).text(clsMod.getEmail());
   const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
-  const divType = jquery(`<div class='card-inside'>`).text("GitHub: ");
-  divType.append(jquery(`<a>`).text(engineer.getGitHub()));
+  const divType = jquery(`<div class='card-inside'>`);
+  switch (type) {
+    case "M":
+      divType.text("Office number: ");
+      divType.append(jquery(`<a>`).text(clsMod.getOfficeNumber()));
+      break;
+
+    case "E":
+      divType.text("GitHub: ");
+      divType.append(jquery(`<a>`).text(clsMod.getGitHub()));
+      break;
+
+    case "I":
+      divType.text("School: ");
+      divType.append(jquery(`<a>`).text(clsMod.getSchool()));
+      break;
+  }
   divBottom.append(divID).append(divEmail).append(divType);
 
   // Add both halves into the card section.
@@ -383,42 +361,6 @@ function addEngineerCard(jquery, engineer) {
 
 }
 
-
-/* ****************************
-  Add Intern Card to Index.html
-******************************* */
-function addInternCard(jquery, intern) {
-
-  // Locate Form where to add card.
-  let formContent = jquery(".form-content");
-
-  // Create section for the card and start building card section
-  const mainSection = jquery("<section>");
-  const cardSection = jquery("<section class='card'>");
-
-  // Top half of the Card.
-  const divTop = jquery("<div>");
-  const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(intern.getName()));
-  const divOccupation = jquery(`<p class="header-line2">`).text(intern.getTitle());
-  divTop.append(divTitleLine).append(divOccupation);
-
-  // Bottom half of the Card.
-  const divBottom = jquery("<div class='card-bottom'>");
-  const divID = jquery(`<div class='card-inside'>`).text("ID: " + intern.getID());
-  const aEmail = jquery(`<a class="email-link">`).text(intern.getEmail());
-  const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
-  const divType = jquery(`<div class='card-inside'>`).text("School: ");
-  divType.append(jquery(`<a>`).text(convertToTitle(intern.getSchool())));
-  divBottom.append(divID).append(divEmail).append(divType);
-
-  // Add both halves into the card section.
-  cardSection.append(divTop).append(divBottom);
-  mainSection.append(cardSection);
-
-  // Update form with card section
-  formContent.append(mainSection);
-
-}
 
 
 /* *************************************
