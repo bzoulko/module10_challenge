@@ -23,7 +23,7 @@ This program is a CLI application using node.js to run it. After starting the ap
     - Email         ( Must formulate a valid Email address such as, nnnnn@ssss.com )
     - School        ( No Validation )
 
-Upon entering these team members and the specs for each, some fields will be validated and you cannot continue until you've entered the requested information in correct format required. 
+Upon entering these team members and the specs for each, some fields will be validated and you will cnot be able to continue until you've entered the requested information in the correct format.
 
 
 ### Testing Class Modules:
