@@ -2,8 +2,8 @@
 This program is a CLI application using node.js to run it. After starting the application your prompted to enter a team manager and several key features about the manager. Then a menu selection comes up asking you to add an Engineer to the team or an Intern or select Finished to exit. Selecting Finished will compile all team members added and finalize the index.html, then runs it in a new browser window for you to review.
 
 
-## Key elements in the Team Profile Generator.
-* From the Terminal prompt, in this projects folder, type "npm start" to start the team profile generator application.
+## Running the Team Profile Generator.
+* From the Terminal prompt, in this projects main folder, type "npm start". This will start the Team Profile Generator application that will being prompting for a Manager and detail on that manager along with two additional types of employees, Engineer's and/or Intern's.
 
 * Adding a Team <b>Manager</b>, you'll be prompted to enter the following:
     - Name          ( No Validation )
@@ -20,10 +20,10 @@ This program is a CLI application using node.js to run it. After starting the ap
 * Adding an <b>Intern</b>, you'll be prompted to enter the following:
     - Name          ( No Validation )
     - ID            ( Validated to all numerics. )
-    - Email         ( Must formulate a valid Email address. )
+    - Email         ( Must formulate a valid Email address such as, nnnnn@ssss.com )
     - School        ( No Validation )
 
-Upon entering these team members and the specs for each, some fields are validated and will not continue until you've entered the correct format. 
+Upon entering these team members and the specs for each, some fields will be validated and you cannot continue until you've entered the requested information in correct format required. 
 
 
 ### Testing Class Modules:
