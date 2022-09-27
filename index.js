@@ -193,7 +193,7 @@ function startCLI() {
   Write HTML Index file from jQuery data.
 ***************************************** */
 function writeHTMLfile(htmlData) {
-  fs.writeFileSync('index.html', "<!DOCTYPE html><html lang='en'>" + htmlData.html() + "</html>");
+  fs.writeFileSync('./dist/index.html', "<!DOCTYPE html><html lang='en'>" + htmlData.html() + "</html>");
 }
 
 
@@ -240,7 +240,7 @@ function addTeamMembers(jquery) {
         writeHTMLfile(jquery("html"));
 
         // Waits until browser window closes.
-        launchHtml(__dirname + "\\index.html");
+        launchHtml(__dirname + "\\dist\\index.html");
       }
 
       switch (answers.menu) {
