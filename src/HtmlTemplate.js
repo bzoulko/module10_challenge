@@ -43,30 +43,4 @@ module.exports = {
         return(htmlTemplate);
     },
 
-
-    addEmployee: function (name, occupation, id, email, type, typeDetail) {
-        
-        let employeeCard = `
-            <section>
-                <section class="card">
-                    <div>
-                        <p class="header-line1">${name}</p>
-                        <p class="header-line2">${occupation}</p>
-                    </div>
-                    <div class="card-bottom">
-                        <div class="card-inside">ID: ${id}</div>
-                        <div class="card-inside">Email:
-                            <a class="email-link">${email}</a>
-                        </div>
-                        <div class="card-inside">${type}:
-                            <a>${typeDetail}</a>
-                        </div>
-                    </div>
-                </section>
-            </section>
-        `;
-
-        return(employeeCard);
-    },
-
 };

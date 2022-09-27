@@ -9,15 +9,27 @@
 */
 
 // Required modules for this application.
-const inquirer =    require('inquirer');          // Prompt features for CLI.
-const fs =          require('fs');                // File System I/O.
-const puppeteer =   require('puppeteer');         // Used to systematically run the new html file.
-const { clear, Console } =   require('console');  // Clear console area on demand.
-const jsdom =       require("jsdom");             // This library will allow JQuery.
+const inquirer            = require('inquirer');  // Prompt features for CLI.
+const fs                  = require('fs');        // File System I/O.
+const path                = require('path');      // Current file path.
+const puppeteer           = require('puppeteer'); // Used to systematically run the new html file.
+const { clear, Console }  = require('console');   // Clear console area on demand.
+const jsdom               = require("jsdom");     // This library will allow JQuery.
 
 
-// Default Template for HTML file creation.
-const htmlPage =    require("../lib/HtmlTemplate.js");
+// Required Class Modules and HTML-Template.
+const htmlPage            = require("./src/HtmlTemplate");
+const Manager             = require("./lib/Manager");
+const Engineer            = require("./lib/Engineer");
+const Intern              = require("./lib/Intern");
+
+
+// Barrowed logic idea from Bootcamp - Week(5) - Day(3) - 08-Stu_for-of/Unsolved/index.js
+const printBlueBkgrndText = (text) => `\x1b[44m${text}\x1b[0m`;
+const printUnderLineText  = (text) => `\x1b[4m\x1b[33m${text}\x1b[0m`;
+const printRedText        = (text) => `\x1b[31m${text}\x1b[0m`; 
+const printYellowText     = (text) => `\x1b[33m${text}\x1b[0m`; 
+const FLD_LEN = 38;
 
 
 // Setup Manager Prompt.
@@ -26,26 +38,44 @@ const managerPrompt = () => {
     {
       type: 'input',
       name: 'name',
-      message: `Team Manager's name: `,
+      message: `Team Manager's ${printUnderLineText("name")}: `.padStart(FLD_LEN),
     },
     {
       type: 'input',
       name: 'ID',
-      message: `Manager's ID: `,
+      message: `Manager's ${printUnderLineText("ID")}: `.padStart(FLD_LEN),
+      validate: function (id) {
+        valid = !(/\D/.test(id));
+        if (valid) return true;
+        console.log(".  " + printRedText("ID must be numeric."));
+        return false;
+      }
     },
     {
       type: 'input',
       name: 'email',
-      message: `Manger's email: `,
+      message: `Manger's ${printUnderLineText("email")}: `.padStart(FLD_LEN),
+      validate: function (email) {
+          // Found sample email validation on: https://gist.github.com/Amitabh-K/...
+          valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+          if (valid) return true;
+          console.log(".  " + printRedText("Please enter a valid email"));
+          return false;
+      }
     },
     {
       type: 'input',
       name: 'office',
-      message: `Manager's office number: `,
+      message: `Manager's ${printUnderLineText("office number")}: `.padStart(FLD_LEN),
+      validate: function (officeNumber) {
+        valid = !(/\D/.test(officeNumber));
+        if (valid) return true;
+        console.log(".  " + printRedText("Office Number must be numeric."));
+        return false;
+      }
     },
   ]);
 };
-
 
 // Setup Menu Prompt
 const menuPrompt = () => {
@@ -53,12 +83,11 @@ const menuPrompt = () => {
     {
       type: "list",
       name: "menu",
-      message: "Add a team member or 'finshed' to exit: ",
-      choices: ["engineer", "intern", new inquirer.Separator(), "finished"],
+      message: `${printYellowText("ADD")} a team member or select ${printUnderLineText("Finished")} to exit: `,
+      choices: [new inquirer.Separator(), "Engineer", "Intern", new inquirer.Separator(), "Finished", new inquirer.Separator()],
     }
   ]);
 };
-
 
 // Setup Engineer Prompt
 const engineerPrompt = () => {
@@ -66,22 +95,35 @@ const engineerPrompt = () => {
     {
       type: 'input',
       name: 'name',
-      message: `Engineer's name: `,
+      message: `Engineer's ${printUnderLineText("name")}: `.padStart(FLD_LEN),
     },
     {
       type: 'input',
       name: 'ID',
-      message: `Engineer's ID: `,
+      message: `Engineer's ${printUnderLineText("ID")}: `.padStart(FLD_LEN),
+      validate: function (id) {
+        valid = !(/\D/.test(id));
+        if (valid) return true;
+        console.log(".  " + printRedText("ID must be numeric."));
+        return false;
+      }
     },
     {
       type: 'input',
       name: 'email',
-      message: `Engineer's email: `,
+      message: `Engineer's ${printUnderLineText("email")}: `.padStart(FLD_LEN),
+      validate: function (email) {
+        // Found sample email validation on: https://gist.github.com/Amitabh-K/...
+        valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+        if (valid) return true;
+        console.log(".  " + printRedText("Please enter a valid email"));
+        return false;
+      }
     },
     {
       type: 'input',
       name: 'github',
-      message: `Engineer's GitHub: `,
+      message: `Engineer's ${printUnderLineText("github")}: `.padStart(FLD_LEN),
     },
   ]);
 };
@@ -92,22 +134,35 @@ const internPrompt = () => {
     {
       type: 'input',
       name: 'name',
-      message: `Intern's name: `,
+      message: `Intern's ${printUnderLineText("name")}: `.padStart(FLD_LEN),
     },
     {
       type: 'input',
       name: 'ID',
-      message: `Intern's ID: `,
+      message: `Intern's ${printUnderLineText("ID")}: `.padStart(FLD_LEN),
+      validate: function (id) {
+        valid = !(/\D/.test(id));
+        if (valid) return true;
+        console.log(".  " + printRedText("ID must be numeric."));
+        return false;
+      }
     },
     {
       type: 'input',
       name: 'email',
-      message: `Intern's email: `,
+      message: `Intern's ${printUnderLineText("email")}: `.padStart(FLD_LEN),
+      validate: function (email) {
+        // Found sample email validation on: https://gist.github.com/Amitabh-K/...
+        valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+        if (valid) return true;
+        console.log(".  " + printRedText("Please enter a valid email"));
+        return false;
+      }
     },
     {
       type: 'input',
       name: 'school',
-      message: 'Enter school: ',
+      message: `Enter ${printUnderLineText("school")}: `.padStart(FLD_LEN),
     },
   ]);
 };
@@ -116,7 +171,7 @@ const internPrompt = () => {
 function screenTitle(msg) {
   clear();
   console.log("***********************************************");
-  console.log(msg);
+  console.log(printBlueBkgrndText(msg));
   console.log("***********************************************");
 }
 
@@ -180,24 +235,16 @@ function addTeamMembers(jquery) {
     .then((answers) => {
 
       // When finished, write out HTML file and open it.
-      if (answers.menu === "finished") {
-        console.log("Finished!");
+      if (answers.menu === "Finished") {
+        console.log("Finished - index.html has been created and launched in browser.");
         writeHTMLfile(jquery("html"));
 
-        //jquery(this).load('index.html', '_self');
-        //jquery("html").load('index.html');
-        //dom.window.open('index.html', '_self')
-
         // Waits until browser window closes.
-        launchHtml("C:\\Users\\bzoul\\OneDrive\\Desktop\\module10_challenge\\index.html");
-
-        // Next steps...
-
-        return;
+        launchHtml(__dirname + "\\index.html");
       }
 
       switch (answers.menu) {
-        case "engineer":
+        case "Engineer":
           screenTitle("   E N T E R   E N G I N E E R   D E T A I L  ");                          
           engineerPrompt() 
             .then((answers) => {
@@ -216,7 +263,7 @@ function addTeamMembers(jquery) {
             });        
           break;
       
-        case "intern":
+        case "Intern":
           screenTitle("     E N T E R   I N T E R N   D E T A I L    ");                          
           internPrompt() 
             .then((answers) => {
@@ -277,7 +324,7 @@ function addManagerCard(jquery, manager) {
     
     // Top half of the Card.
     const divTop = jquery("<div>");
-    const divTitleLine = jquery(`<p class="header-line1">`).text(manager.getName());
+    const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(manager.getName()));
     const divOccupation = jquery(`<p class="header-line2">`).text(manager.getTitle());
     divTop.append(divTitleLine).append(divOccupation);
   
@@ -314,7 +361,7 @@ function addEngineerCard(jquery, engineer) {
 
   // Top half of the Card.
   const divTop = jquery("<div>");
-  const divTitleLine = jquery(`<p class="header-line1">`).text(engineer.getName());
+  const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(engineer.getName()));
   const divOccupation = jquery(`<p class="header-line2">`).text(engineer.getTitle());
   divTop.append(divTitleLine).append(divOccupation);
 
@@ -351,7 +398,7 @@ function addInternCard(jquery, intern) {
 
   // Top half of the Card.
   const divTop = jquery("<div>");
-  const divTitleLine = jquery(`<p class="header-line1">`).text(intern.getName());
+  const divTitleLine = jquery(`<p class="header-line1">`).text(convertToTitle(intern.getName()));
   const divOccupation = jquery(`<p class="header-line2">`).text(intern.getTitle());
   divTop.append(divTitleLine).append(divOccupation);
 
@@ -361,7 +408,7 @@ function addInternCard(jquery, intern) {
   const aEmail = jquery(`<a class="email-link">`).text(intern.getEmail());
   const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
   const divType = jquery(`<div class='card-inside'>`).text("School: ");
-  divType.append(jquery(`<a>`).text(intern.getSchool()));
+  divType.append(jquery(`<a>`).text(convertToTitle(intern.getSchool())));
   divBottom.append(divID).append(divEmail).append(divType);
 
   // Add both halves into the card section.
@@ -374,193 +421,15 @@ function addInternCard(jquery, intern) {
 }
 
 
-/*
-    Created:    09/22/2022 
-    Programmer: Brian Zoulko
-    Notes:      Devopled CLASS module for Employee's properties and methods.
-
-    Modification
-    ============
-    09/22/2022 Brian Zoulko    Initial creation of class module.    
-*/
-/* **************************************
-  C L A S S   M O D U L E  -  Employee(s) 
-***************************************** */
-class Employee {
-    
-  constructor(name, id, email) {
-    this.name = name;
-    this.id = id;
-    this.email = email;
+/* *************************************
+    Convert string to Title Case Format.
+**************************************** */
+function convertToTitle(stringIn){
+  var stringOut = stringIn.toLowerCase().split(' ');
+  for (var i = 0; i < stringOut.length; i++) {
+      stringOut[i] = stringOut[i].charAt(0).toUpperCase() + stringOut[i].slice(1);
   }
-
-  // Return:  Employee Name.
-  getName() {
-    return(this.name);
-  }
-
-  // Return:  Employee Id
-  getID() {
-    return(this.id);
-  }
-
-  // Return:  Employee Email
-  getEmail() {
-    return(this.email);
-  }
-
-  // Return:  Employee Class
-  getRole() {
-    return(new Employee(this.name, this.id, this.email));
-  }
-
-}
-
-
-/*
-    Created:    09/22/2022 
-    Programmer: Brian Zoulko
-    Notes:      Devopled CLASS module for Manager's properties and methods.
-
-    Modification
-    ============
-    09/22/2022 Brian Zoulko    Initial creation of class module.    
-*/
-/* **********************************
-  C L A S S   M O D U L E  -  Manager 
-************************************* */
-class Manager extends Employee {        
-
-  constructor(name, id, email, officeNumber) {
-    super(name, id, email);
-    this.officeNumber = officeNumber;
-  }
-
-  getName() {
-    return(super.getName());
-  }
-
-  getID() {
-    return(super.getID());
-  }
-
-  getEmail() {
-    return(super.getEmail());
-  }
-
-  // Return:  Title Text w/Emoji Image
-  getTitle(){
-    return("🍵Manager");
-  }
-  
-  // Return:  Office Number
-  getOfficeNumber() {
-    return(this.officeNumber);
-  }
-  
-  // Return:  Manager Class
-  getRole() {
-    return(Manager);
-  }
-
-}
-
-
-/*
-    Created:    09/22/2022 
-    Programmer: Brian Zoulko
-    Notes:      Devopled CLASS module for Engineer's properties and methods.
-
-    Modification
-    ============
-    09/22/2022 Brian Zoulko    Initial creation of class module.    
-*/
-/* ***********************************
-  C L A S S   M O D U L E  -  Engineer 
-************************************** */
-class Engineer extends Employee {
-    
-  constructor(name, id, email, gitHub) {
-    super(name, id, email);
-    this.gitHub = gitHub;
-  }
-
-  getName() {
-    return(super.getName());
-  }
-
-  getID() {
-    return(super.getID());
-  }
-
-  getEmail() {
-    return(super.getEmail());
-  }
-  
-  // Return:  Git Hub URL
-  getGitHub() {
-    return(this.gitHub);
-  }
-
-  // Return:  Title Text w/Emoji Image
-  getTitle(){
-    return("👷Engineer");
-  }
-
-  // Retrun:  Engineer Class
-  getRole() {
-    return(Engineer);
-  }
-
-}
-
-
-/*
-    Created:    09/22/2022 
-    Programmer: Brian Zoulko
-    Notes:      Devopled CLASS module for Intern's properties and methods.
-
-    Modification
-    ============
-    09/22/2022 Brian Zoulko    Initial creation of class module.    
-*/
-/* *********************************
-  C L A S S   M O D U L E  -  Intern 
-************************************ */
-class Intern extends Employee{
-    
-  constructor(name, id, email, school) {
-    super(name, id, email);
-    this.school = school;
-  }
-
-  getName() {
-    return(super.getName());
-  }
-
-  getID() {
-    return(super.getID());
-  }
-
-  getEmail() {
-    return(super.getEmail());
-  }
-
-  // Return:  School
-  getSchool() {
-    return(this.school);
-  }
-
-  // Return:  Title Text w/Emoji Image
-  getTitle(){
-    return("🎓Intern");
-  }
-  
-  // Return:  Intern Class
-  getRole() {
-    return(Intern);
-  }
-
+  return stringOut.join(' ');
 }
 
 
