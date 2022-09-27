@@ -330,7 +330,7 @@ function addManagerCard(jquery, manager) {
   
     // Bottom half of the Card.
     const divBottom = jquery("<div class='card-bottom'>");
-    const divID = jquery(`<div class='card-inside'>`).text("ID: " + manager.getID());
+    const divID = jquery(`<div class='card-inside'>`).append.text("ID: " + manager.getID());
     const aEmail = jquery(`<a class="email-link">`).text(manager.getEmail());
     const divEmail = jquery("<div class='card-inside'>").text("Email: ").append(aEmail);
     const divType = jquery(`<div class='card-inside'>`).text("Office number: ");
