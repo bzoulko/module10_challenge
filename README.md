@@ -42,7 +42,7 @@ Upon entering these team members and the specs for each, some fields are validat
 * The number of tests was determined by the number of arguments passed to each class module. Each argument must undergo an integrity test to ensure the data is not lost and logically the routines do not fail.
 
 
-### Spoecial Notes:
+### Special Notes:
 * The index.js file contains a majority of the logic for this application.
 
 * Class modules can be found under <b>lib</b>, which assist in gathering the necessary arguments for each type of team member.
