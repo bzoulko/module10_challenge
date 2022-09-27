@@ -35,9 +35,6 @@ module.exports = {
                 </form>    
             </main>
         
-            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-            <script src="./src/teamProfileGenerator.js"></script>    
-
         </body>
         `
         return(htmlTemplate);
